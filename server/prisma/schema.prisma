@@ -32,6 +32,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  Product Product[]
+
   @@index([genre, createdAt, birthDate])
 }
 
@@ -51,6 +53,7 @@ model Product {
   rating      Float
   reviews     Review[]
   businessId  String
+  business    User      @relation(fields: [businessId], references: [id], onDelete: Cascade)
   promoted    Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

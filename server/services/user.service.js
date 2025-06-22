@@ -3,6 +3,13 @@ const User = require("../models/user");
 const prisma = require("../prisma/client");
 const { ApplicationError } = require("../utils/error")
 
+
+/**
+ * USer Service Class
+ *
+ * @class UserService
+ * @typedef {UserService}
+ */
 class UserService {
 
     

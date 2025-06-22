@@ -6,6 +6,14 @@ const prisma = require("../prisma/client");
 const { ApplicationError } = require("../utils/error");
 const redisService = require('./redis.service');
 const  UserService = require('./user.service')
+
+
+/**
+ * Auth Service Class
+ *
+ * @class AuthService
+ * @typedef {AuthService}
+ */
 class AuthService {
     
 
