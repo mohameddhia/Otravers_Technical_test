@@ -8,10 +8,9 @@ class User {
     /** @type {string} */ #firstName;
     /** @type {string} */ #lastName;
     /** @type {Genre} */ #genre;
-    /** @type {string} */ #birthDate;
-    /** @type {IReview} */ #reviews;
-    /** @type {string} */ #createdAt;
-    /** @type {string} */ #updatedAt;
+    /** @type {Date} */ #birthDate;
+    /** @type {Date} */ #createdAt;
+    /** @type {Date} */ #updatedAt;
 
     constructor(_data){
         if(!User.validateEmail(_data.email)) 
@@ -26,9 +25,6 @@ class User {
         this.#lastName = _data.lastName;
         this.#genre = _data.genre;
         this.#birthDate = new Date(_data.birthDate);
-        (Array.isArray(_data.reviews) && _data.reviews.length !== 0) ?? this.#reviews.push(_data.reviews);
-        this.#createdAt = new Date(_data.createdAt);
-        this.#updatedAt = new Date(_data.updatedAt);
     }
 
     // ------------------ Getters ------------------ //
@@ -39,7 +35,6 @@ class User {
     get lastName() { return this.#lastName; }
     get genre() { return this.#genre; }
     get birthDate() { return this.#birthDate; }
-    get reviews() { return this.#reviews; }
     get createdAt() { return this.#createdAt; }
     get updatedAt() { return this.#updatedAt; }
 
@@ -61,12 +56,7 @@ class User {
         this.#birthDate = new Date(_birthDate);
     }
   
-    set reviews(_reviews){
-        if(!Array.isArray(_reviews) || _reviews.length === 0)
-            throw new Error('Invalid Input')
-        this.#reviews = _reviews;
-    }
-    
+
     /**
      * Set Email
      * @type {string}
@@ -98,10 +88,10 @@ class User {
      * @returns {void} 
      */
     async setPassword(_password){
-        if(await this.comparePassword(this.#password , _password))
+        if(await User.comparePassword(this.#password , _password))
             throw new Error('New Password Cannot be the same Password');
 
-        this.#password = await this.encryptPassword(_password);
+        this.#password = await User.encryptPassword(_password);
     }
 
     // ----------- Static Methods -----------
@@ -123,7 +113,6 @@ class User {
             lastName: '',
             genre: 'MAN',
             birthDate: new Date(),
-            reviews: [],
             createdAt: new Date(Date.now()),
             updatedAt: new Date(Date.now())
         };
@@ -190,7 +179,6 @@ class User {
             lastName: this.#lastName,
             genre: this.#genre,
             birthDate: this.#birthDate,
-            reviews: this.#reviews,
             createdAt: this.#createdAt,
             updatedAt: this.#updatedAt
         }
