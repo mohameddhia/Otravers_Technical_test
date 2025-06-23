@@ -27,6 +27,73 @@
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *     ProductMedia:
+ *       type: object
+ *       properties:
+ *         Image:
+ *           type: array
+ *           items:
+ *             type: string
+ *         model3d:
+ *           type: string
+ *     
+ *     Variant:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         price:
+ *           type: number
+ *         stock:
+ *           type: number
+ *
+ *     Product:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *         name:
+ *           type: string
+ *         slug:
+ *           type: string
+ *         description:
+ *           type: string
+ *         category:
+ *           type: string
+ *         subcategory:
+ *           type: string
+ *         price:
+ *           type: number
+ *         discount:
+ *           type: number
+ *         stock:
+ *           type: number
+ *         media:
+ *           $ref: '#/components/schemas/ProductMedia'
+ *         variants:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Variant'
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *         rating:
+ *           type: number
+ *         businessId:
+ *           type: string
+ *         promoted:
+ *           type: boolean
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *
  *     CreateUserRequest:
  *       type: object
  *       required:
@@ -147,6 +214,93 @@
  *           example: "Profile retrieved successfully"
  *         data:
  *           $ref: '#/components/schemas/User'
+ *     CreateProductRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *         - slug
+ *         - price
+ *         - businessId
+ *       properties:
+ *         name:
+ *           type: string
+ *         slug:
+ *           type: string
+ *         description:
+ *           type: string
+ *         category:
+ *           type: string
+ *         subcategory:
+ *           type: string
+ *         price:
+ *           type: number
+ *         discount:
+ *           type: number
+ *         stock:
+ *           type: number
+ *         media:
+ *           $ref: '#/components/schemas/ProductMedia'
+ *         variants:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Variant'
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *         businessId:
+ *           type: string
+ *         promoted:
+ *           type: boolean
+ *
+ *     UpdateStockRequest:
+ *       type: object
+ *       required:
+ *         - quantity
+ *       properties:
+ *         quantity:
+ *           type: number
+ *           description: The quantity to add (positive) or remove (negative)
+ *
+ *     SearchProductsRequest:
+ *       type: object
+ *       properties:
+ *         category:
+ *           type: string
+ *         subcategory:
+ *           type: string
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *         minPrice:
+ *           type: number
+ *         maxPrice:
+ *           type: number
+ *         inStock:
+ *           type: boolean
+ *         search:
+ *           type: string
+ *         page:
+ *           type: number
+ *           default: 1
+ *         limit:
+ *           type: number
+ *           default: 10
+ *
+ *     SearchProductsResponse:
+ *       type: object
+ *       properties:
+ *         products:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Product'
+ *         total:
+ *           type: number
+ *         page:
+ *           type: number
+ *         totalPages:
+ *           type: number
  *     ErrorResponse:
  *       type: object
  *       properties:

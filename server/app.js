@@ -13,6 +13,12 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // Custom CSS to ensure proper expansion
@@ -56,15 +62,9 @@ app.get('/api-docs.json', (req, res) => {
   res.send(swaggerSpec);
 });
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/products',require('./routes/product'));
 
 module.exports = app;
