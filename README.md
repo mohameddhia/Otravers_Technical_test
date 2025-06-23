@@ -68,12 +68,11 @@ This project is a modular, secure, and scalable product catalog system designed 
 project-root/
 │
 ├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── ...
+│   │── controllers/
+│   │── services/
+│   │── models/
+│   │── routes/
+│   │── ...
 │   ├── test/
 │   ├── swagger/
 │   ├── .env.example
@@ -106,9 +105,9 @@ project-root/
 ### Prerequisites
 
 - Node.js >= 18.x
-- npm >= 9.x or yarn >= 1.22.x
-- Docker (optional, for DB and local development)
-- PostgreSQL or MongoDB running instance
+- pnpm >=10.10.0
+- Docker (optional, for DB and local development, and Redis MemoryDB)
+- PostgreSQL running instance
 
 ### Backend
 
