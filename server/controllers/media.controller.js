@@ -98,7 +98,7 @@ class MediaController{
                     width: 200,
                     height: 200
                 }),
-                mediumUrl: MediaService.generateOptimizedUrl(image.url, {
+                mediumUrl: MediaService.generatOptimizedUrl(image.url, {
                     width: 600
                 }),
                 originalUrl: image.url
@@ -108,6 +108,7 @@ class MediaController{
                 data: optimizedUrl
             });
         } catch (error) {
+            console.log("[MediaController][getImages]",error);
             if (error instanceof ApplicationError) {
                 res.status(error.statusCode).json({ message: error.message });
             } else {

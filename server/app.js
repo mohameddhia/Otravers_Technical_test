@@ -4,8 +4,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 
 const swaggerOptions = require('./config/swagger.config')
+const allowedOrigins = require('./middleware/cors.middleware');
 
 
 var indexRouter = require('./routes/index');
@@ -13,7 +15,7 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-
+app.use(cors(allowedOrigins));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
