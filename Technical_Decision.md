@@ -94,7 +94,7 @@
 
 | Area               | Your Stack                    | Why                                                                                      |
 |--------------------|------------------------------|------------------------------------------------------------------------------------------|
-| Backend Framework  | Express.js + TypeScript      | Clean, modular, type-safe, and async-ready; codebase leverages strong TypeScript usage.  |
+| Backend Framework  | Express.js      | Clean, modular, and async-ready; codebase leverages.  |
 | Frontend Framework | React.js + Redux Toolkit     | Modern, component-driven, excellent state management and developer experience.           |
 | Database           | PostgreSQL                      | Flexible schema for product variants, media, and i18n fields.                            |
 | File Storage       | ImageKit (or S3, Cloudinary) | Secure storage, fast CDN delivery, and image transformation capabilities.                |
