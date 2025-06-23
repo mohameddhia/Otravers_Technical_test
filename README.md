@@ -114,9 +114,11 @@ project-root/
 ```bash
 cd backend
 cp .env.example .env
-npm install
-npm run migrate # or prisma migrate, etc.
-npm run start
+pnpm install
+pnpm prisma:generate # or prisma migrate, etc.
+pnpm prisma:deploy
+pnpm prisma:push
+pnpm start:dev
 ```
 
 ### Frontend
@@ -124,8 +126,8 @@ npm run start
 ```bash
 cd frontend
 cp .env.example .env
-npm install
-npm start
+yarn
+yarm dev
 ```
 
 ---
