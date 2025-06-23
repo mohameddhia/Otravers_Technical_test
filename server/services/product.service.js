@@ -25,18 +25,16 @@ class ProductService {
      */
     static async create(_productData){
         try {
-            if(!_productData.name) throw new ApplicationError('Product Name is required',400);
+            if(!_productData.name || _productData.name === '') throw new ApplicationError('Product Name is required',400);
             if(!_productData.businessId) throw new ApplicationError("business Id is required",400);
             if(!Product.validatePrice(_productData.price)) throw new ApplicationError('Price is invalid',400);
             if(!Product.validateSlug(_productData.slug)) throw new ApplicationError('Invalid Slug',400);
 
-            const userExist = await UserService.getUserById(_productData.businessId);
-
-            const productInstance = new Product(userExist);
+           await UserService.getUserById(_productData.businessId);
 
             const createdProduct = await prisma.Product.create({
                 data:{
-                    ...productInstance.toJson(),
+                    ..._productData,
                     variants:{
                         create: _productData.variants || []
                     }
@@ -47,8 +45,9 @@ class ProductService {
                 }
             });
 
-            return createdProduct;
+            return new Product(createdProduct).toJson();
         } catch (error) {
+            console.log('[ProductService][create]',error);
             if (error instanceof ApplicationError) throw error;
             if (error.code === 'P2002') {
                 const field = error.meta?.target?.[0];
@@ -70,6 +69,7 @@ class ProductService {
      */
     static async getById(_id){
         try {
+            if(!_id) throw new ApplicationError('Id is required',400);
             const product = await prisma.Product.findUnique({
                 where: {id: _id},
                 include :{
@@ -88,10 +88,10 @@ class ProductService {
                     }
                 }
             });
-
             if(!product) throw new ApplicationError('Product Not Found',404)
+            console.log('[ProductService][getById]',product);
 
-            return product;
+            return new Product(product).toJson();
         } catch (error) {
             if (error instanceof ApplicationError) throw error;
             throw new ApplicationError(error.message, 500);
@@ -162,24 +162,56 @@ class ProductService {
                 ...existingProduct,
                 ..._updatedData
             });
+            const productData = productInstance.toJson();
 
+            const updateData = {
+                name: productData.name,
+                slug: productData.slug,
+                description: productData.description,
+                category: productData.category,
+                subcategory: productData.subcategory,
+                price: productData.price,
+                discount: productData.discount,
+                stock: productData.stock,
+                media: productData.media,
+                tags: productData.tags,
+                rating: productData.rating,
+                promoted: productData.promoted
+            };
+
+            // Handle Variants , separately
+            if (_updatedData.variants) {
+                updateData.variants = {
+                    deleteMany: {},
+                    create: _updatedData.variants.map(variant => ({
+                        name: variant.name,
+                        price: variant.price,
+                        stock: variant.stock
+                    }))
+                };
+            }
             const updateProduct = await prisma.Product.update({
-                where: {id: _id},
-                data:{
-                    ...productInstance.toJson(),
-                    variants: _updatedData.variants ? {
-                        deleteMany: {},
-                        create: _updatedData.variants
-                    } : undefined
-                },
-                include:{
+                where: { id: _id },
+                data: updateData,
+                include: {
                     variants: true,
-                    reviews: true
+                    reviews: {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    firstName: true,
+                                    lastName: true
+                                }
+                            }
+                        }
+                    }
                 }
             });
 
             return updateProduct;
         } catch (error) {
+            console.log('[ProductService][update]',error);
             if (error instanceof ApplicationError) throw error;
             throw new ApplicationError(error.message, 500);
         }
@@ -275,7 +307,7 @@ class ProductService {
                         }
                     },
                     skip: (page - 1) * limit,
-                    take: limit
+                    take: Number(limit)
                 }),
                 await prisma.product.count({where})
             ]);
@@ -283,9 +315,10 @@ class ProductService {
             return {
                 products,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit) || 1
             };
         } catch (error) {
+            console.log('[ProductService][search]',error);
             if (error instanceof ApplicationError) throw error;
             throw new ApplicationError(error.message, 500);
         }

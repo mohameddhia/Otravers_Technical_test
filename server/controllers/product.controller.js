@@ -1,4 +1,5 @@
 const ProductService = require("../services/product.service");
+const { ApplicationError } = require("../utils/error");
 
 
 
@@ -51,7 +52,7 @@ class ProductController{
      */
     static async getById(req,res) {
         try {
-            const product = ProductService.getById(req.params.id);
+            const product = await ProductService.getById(req.params.id);
             res.status(200).json(product);
         } catch (error) {
             if (error instanceof ApplicationError) {
@@ -170,8 +171,8 @@ class ProductController{
     static async updateStock(req,res){
         try {
             const product = await ProductService.updateStock(
-                req.query.id,
-                req.query.quantity
+                req.params.id,
+                req.body.quantity
             );
 
             res.status(200).json({

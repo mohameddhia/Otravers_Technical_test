@@ -66,5 +66,5 @@ app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products',require('./routes/product'));
-
+app.use('/api/products',require('./routes/media'))
 module.exports = app;

@@ -21,8 +21,8 @@ class Product {
     /** @type {Date} */ #updatedAt;
 
     constructor(_data) {
-        if (!Product.validatePrice(_data.price))
-            throw new Error('Invalid Price');
+        // if (!Product.validatePrice(_data.price))
+        //     throw new Error('Invalid Price');
         if (!Product.validateSlug(_data.slug))
             throw new Error('Invalid Slug Format');
 

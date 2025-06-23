@@ -53,6 +53,8 @@ router.post('/', verifyToken, ProductController.createProduct);
  *   get:
  *     summary: Search products with filters
  *     tags: [Products]
+ *     security:
+ *       - cookieAuth: []
  *     parameters:
  *       - in: query
  *         name: category
@@ -104,7 +106,7 @@ router.post('/', verifyToken, ProductController.createProduct);
  *       500:
  *         description: Internal server error
  */
-router.get('/search', ProductController.search);
+router.get('/search', verifyToken,ProductController.search);
 
 /**
  * @swagger
@@ -112,6 +114,8 @@ router.get('/search', ProductController.search);
  *   get:
  *     summary: Get product by ID
  *     tags: [Products]
+ *     security:
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -130,7 +134,7 @@ router.get('/search', ProductController.search);
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', ProductController.getById);
+router.get('/:id', verifyToken,ProductController.getById);
 
 /**
  * @swagger
@@ -138,6 +142,8 @@ router.get('/:id', ProductController.getById);
  *   get:
  *     summary: Get product by slug
  *     tags: [Products]
+ *     security:
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: slug
@@ -156,7 +162,7 @@ router.get('/:id', ProductController.getById);
  *       500:
  *         description: Internal server error
  */
-router.get('/slug/:slug', ProductController.getBySlug);
+router.get('/slug/:slug', verifyToken,ProductController.getBySlug);
 
 /**
  * @swagger
@@ -202,7 +208,7 @@ router.put('/:id', verifyToken, ProductController.update);
 /**
  * @swagger
  * /products/{id}/stock:
- *   put:
+ *   patch:
  *     summary: Update product stock
  *     tags: [Products]
  *     security:
@@ -240,7 +246,7 @@ router.put('/:id', verifyToken, ProductController.update);
  *       500:
  *         description: Internal server error
  */
-router.put('/:id/stock', verifyToken, ProductController.updateStock);
+router.patch('/:id/stock', verifyToken, ProductController.updateStock);
 
 /**
  * @swagger
